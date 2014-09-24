@@ -1,0 +1,24 @@
+{
+	"bridge": {
+		"host": ""
+	},
+	"teamcity": {
+		"host": "",
+		"port": "",
+		"user": "",
+		"password": ""
+	},
+	"watch": [	
+		"AndroidViewer",
+		"#uploader_NVolumental",
+		"Nimble",
+		"#OpenCV",
+		"Reconstruction",
+		"#ReconstructionAttic",
+		"ShoeSizer",
+		"uploader",
+		"#VolumentalWebsite",
+		"NVolumental"
+	]
+}
+
