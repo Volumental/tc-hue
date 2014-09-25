@@ -1,5 +1,6 @@
 import update_lamp
 from mock import Mock
+import datetime
 
 class fake_team_city:
 	def __init__(self, projects):
@@ -50,25 +51,31 @@ def assertEqual(expected, actual):
 class fixture:
 	def __init__(self, cfg):
 		self.cfg = cfg
+		update_lamp.create_bridge = create_bridge_fake
+		self.now = datetime.datetime(2014, 9, 25, 13, 37)
 
 	def test_one_build_failed(self):
-		update_lamp.create_bridge = create_bridge_fake
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': False } })
-		update_lamp.update_lamps(self.cfg)
+		update_lamp.update_lamps(self.cfg, self.now)
 		
-		assertEqual(63300, light1.hue)	
+		assertEqual(0.0, light1.hue)
+		assertEqual(True, light1.on)
 
 	def test_no_builds_fail(self):
-		update_lamp.create_bridge = create_bridge_fake
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': True } })
-		update_lamp.update_lamps(self.cfg)
+		update_lamp.update_lamps(self.cfg, self.now)
 
-		assertEqual(23847, light1.hue)	
+		assertEqual(21845.0, light1.hue)	
+		assertEqual(True, light1.on)
 
 def main():
 	cfg = {
 		"bridge": {
 			"host": "bridge.acme.com"
+		},
+		"colors": {
+			"success": "#00ff00",
+			"fail": "#ff0000"
 		},
 		"teamcity": {
 			"user": "zelda",
