@@ -49,13 +49,9 @@ today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
 if now > today06 and now < today20:
 
 	tc = create_team_city_client(config)
-#	tc = TeamCityRESTApiClient('build-lamp', 'Abc123', 'localhost', 8111);
 	all_projects = tc.get_all_projects().get_from_server()
 
-	with open('projects.cfg') as f:
-		watched = f.read().splitlines()
-
-	print watched
+	watched = config[u'teamcity'][u'watch'];
 
 	ok_projects = []
 	for p in all_projects[u'project']:
@@ -63,7 +59,6 @@ if now > today06 and now < today20:
 		project = tc.get_project_by_project_id(id).get_from_server()
 	
 		if id in watched:
-			print id
 			statuses = []	
 			for config in project[u'buildTypes'][u'buildType']:
 				b = tc.get_all_builds().set_build_type(config[u'id']).set_lookup_limit(1).get_from_server()
