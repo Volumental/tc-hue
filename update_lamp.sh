@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python tc-hue.py
+python update_lamp.py
