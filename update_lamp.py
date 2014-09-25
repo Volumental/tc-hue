@@ -33,47 +33,54 @@ def create_team_city_client(config):
 		tc[u'user'], tc[u'password'],
 		tc[u'host'], int(tc[u'port']))
 
-with open('config.json') as config_file:    
-    config = json.load(config_file)
+def update_lamps(config)
 
-print config
-bridge = Bridge(config[u'bridge'][u'host'])
+	bridge = Bridge(config[u'bridge'][u'host'])
 
-bridge.connect()
-bridge.get_api()
+	bridge.connect()
+	bridge.get_api()
 
-now = datetime.datetime.now()
-today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
-today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
+	now = datetime.datetime.now()
+	today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
+	today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
 
-if now > today06 and now < today20:
+	if now > today06 and now < today20:
 
-	tc = create_team_city_client(config)
-	all_projects = tc.get_all_projects().get_from_server()
+		tc = create_team_city_client(config)
+		all_projects = tc.get_all_projects().get_from_server()
 
-	watched = config[u'teamcity'][u'watch'];
+		watched = config[u'teamcity'][u'watch'];
 
-	ok_projects = []
-	for p in all_projects[u'project']:
-		id = p[u'id'];
-		project = tc.get_project_by_project_id(id).get_from_server()
+		ok_projects = []
+		for p in all_projects[u'project']:
+			id = p[u'id'];
+			project = tc.get_project_by_project_id(id).get_from_server()
 	
-		if id in watched:
-			statuses = []	
-			for config in project[u'buildTypes'][u'buildType']:
-				b = tc.get_all_builds().set_build_type(config[u'id']).set_lookup_limit(1).get_from_server()
-				if u'build' in b:
-					status = b[u'build'][0][u'status']
-					statuses.append(status)
+			if id in watched:
+				statuses = []	
+				for config in project[u'buildTypes'][u'buildType']:
+					b = tc.get_all_builds().set_build_type(config[u'id']).set_lookup_limit(1).get_from_server()
+					if u'build' in b:
+						status = b[u'build'][0][u'status']
+						statuses.append(status)
 		
-			ok_projects.append(not 'FAILURE' in statuses)
+				ok_projects.append(not 'FAILURE' in statuses)
 
-
-	on(bridge)
-	if all(ok_projects):
-		green(bridge)
+		on(bridge)
+		if all(ok_projects):
+			green(bridge)
+		else:
+			red(bridge)
 	else:
-		red(bridge)
-else:
-	off(bridge)
+		off(bridge)
 
+
+def main():
+	with open('config.json') as config_file:    
+		config = json.load(config_file)
+
+	update_lamps(config);
+
+
+if __name__ == "__main__":
+    main()
