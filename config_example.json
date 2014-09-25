@@ -2,23 +2,18 @@
 	"bridge": {
 		"host": ""
 	},
-	"teamcity": {
-		"host": "",
-		"port": "",
-		"user": "",
-		"password": ""
+	"colors": {
+		"success": {
+		},
+		"fail": {
+		}
 	},
-	"watch": [	
-		"AndroidViewer",
-		"#uploader_NVolumental",
-		"Nimble",
-		"#OpenCV",
-		"Reconstruction",
-		"#ReconstructionAttic",
-		"ShoeSizer",
-		"uploader",
-		"#VolumentalWebsite",
-		"NVolumental"
-	]
+	"teamcity": {
+		"host": "localhost",
+		"port": "8111",
+		"user": "",
+		"password": "",
+		"watch": [	
+		]
+	}
 }
-
