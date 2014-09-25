@@ -33,10 +33,12 @@ def create_team_city_client(config):
 		tc[u'user'], tc[u'password'],
 		tc[u'host'], int(tc[u'port']))
 
-def update_lamps(config)
+def create_bridge(host):
+	return Bridge(host)
 
-	bridge = Bridge(config[u'bridge'][u'host'])
+def update_lamps(config):
 
+	bridge = create_bridge(config[u'bridge'][u'host'])
 	bridge.connect()
 	bridge.get_api()
 
