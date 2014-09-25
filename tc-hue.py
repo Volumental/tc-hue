@@ -27,6 +27,12 @@ def off(bridge):
 	for light in lights:
 		light.on = False
 
+def create_team_city_client(config):
+	tc = config[u'teamcity']
+	return TeamCityRESTApiClient(
+		tc[u'user'], tc[u'password'],
+		tc[u'host'], int(tc[u'port']))
+
 with open('config.json') as config_file:    
     config = json.load(config_file)
 
@@ -42,8 +48,8 @@ today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
 
 if now > today06 and now < today20:
 
-	#tc = TeamCityRESTApiClient('build-lamp', 'Abc123', 'build.volumental.com', 8111);
-	tc = TeamCityRESTApiClient('build-lamp', 'Abc123', 'localhost', 8111);
+	tc = create_team_city_client(config)
+#	tc = TeamCityRESTApiClient('build-lamp', 'Abc123', 'localhost', 8111);
 	all_projects = tc.get_all_projects().get_from_server()
 
 	with open('projects.cfg') as f:
