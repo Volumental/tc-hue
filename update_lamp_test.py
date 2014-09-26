@@ -58,14 +58,14 @@ class fixture:
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': False } })
 		update_lamp.update_lamps(self.cfg, self.now)
 		
-		assertEqual(0.0, light1.hue)
+		assertEqual(0, light1.hue)
 		assertEqual(True, light1.on)
 
 	def test_no_builds_fail(self):
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': True } })
 		update_lamp.update_lamps(self.cfg, self.now)
 
-		assertEqual(21845.0, light1.hue)	
+		assertEqual(21845, light1.hue)	
 		assertEqual(True, light1.on)
 
 def main():

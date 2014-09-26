@@ -36,9 +36,9 @@ class Color:
 def set_color(bridge, color):
 	lights = bridge.get_light_objects()
 	for light in lights:
-		light.brightness = color.luminance * 254
-		light.hue = color.hue * 65535 / 360
-		light.saturation = color.saturation * 254
+		light.brightness = int(color.luminance * 254.0)
+		light.hue = int(color.hue * 65535.0 / 360.0)
+		light.saturation = int(color.saturation * 254.0)
 
 def on(bridge):
 	lights = bridge.get_light_objects()
