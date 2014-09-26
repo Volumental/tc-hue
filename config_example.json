@@ -3,10 +3,8 @@
 		"host": ""
 	},
 	"colors": {
-		"success": {
-		},
-		"fail": {
-		}
+		"success": "#00ee33",
+		"fail": "#ff0000"
 	},
 	"teamcity": {
 		"host": "localhost",
@@ -17,3 +15,4 @@
 		]
 	}
 }
+
