@@ -7,7 +7,10 @@ Create a `config.json` file based on the `config_example.json` in the repository
 need to enter TeamCity hostname and credentials as well as the ip/hostname of the Philips Hue
 Bridge.
 
-Then simply run `python update_lamps.py` to update the lamps.
+Then simply run `python update_lamp.py` to update the lamps.
+
+On the current build server the update script is run as a cron task under builder user from the path:
+/home/builder/tc-hue/
 
 Dependencies
 
