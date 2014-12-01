@@ -71,7 +71,7 @@ def update_lamps(config, now):
 	bridge.connect()
 	bridge.get_api()
 
-     	today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
+	today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
 	today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
 
 	if now > today06 and now < today20:
