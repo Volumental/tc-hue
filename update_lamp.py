@@ -109,7 +109,6 @@ def update_lamps(config, now):
 	auth.set_access_token(config[u'twitter_settings'][u'access_token'],config[u'twitter_settings'][u'access_token_secret'])
 	api = API(auth)
 	results = api.search(q="volumental")
-	volumental_mint_color = "#76c69e"
 	for result in results:
 		ts = datetime.fromtimestamp(mktime(strptime(str(result.created_at),'%Y-%m-%d %H:%M:%S')))
 		ts = ts + timedelta(hours=1)
