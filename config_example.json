@@ -5,7 +5,8 @@
 	"colors": {
 		"success": "#00ee33",
 		"fail": "#ff0000",
-        "volumental_mint" : "#76c69e"
+        "volumental_mint" : "#76c69e",
+        "twitter_blue" : "#0000ff"
 	},
 	"teamcity": {
 		"host": "localhost",
