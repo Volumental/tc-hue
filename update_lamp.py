@@ -108,7 +108,7 @@ def update_lamps(config, now):
 	auth = OAuthHandler(config[u'twitter_settings'][u'consumer_key'], config[u'twitter_settings'][u'consumer_secret'])
 	auth.set_access_token(config[u'twitter_settings'][u'access_token'],config[u'twitter_settings'][u'access_token_secret'])
 	api = API(auth)
-	results = api.search(q="volumental")
+	results = api.search(q="volumental-from%3Avolumental")
 	for result in results:
 		ts = datetime.fromtimestamp(mktime(strptime(str(result.created_at),'%Y-%m-%d %H:%M:%S')))
 		ts = ts + timedelta(hours=1)
