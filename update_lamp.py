@@ -108,7 +108,7 @@ def update_lamps(config, now):
 	auth = OAuthHandler(config[u'twitter_settings'][u'consumer_key'], config[u'twitter_settings'][u'consumer_secret'])
 	auth.set_access_token(config[u'twitter_settings'][u'access_token'],config[u'twitter_settings'][u'access_token_secret'])
 	api = API(auth)
-	results = api.search(q="volumental")
+	results = api.search(q="volumental-from%3Avolumental")
 	for result in results:
 		ts = datetime.fromtimestamp(mktime(strptime(str(result.created_at),'%Y-%m-%d %H:%M:%S')))
 		ts = ts + timedelta(hours=1)
@@ -119,11 +119,11 @@ def update_lamps(config, now):
 			run_for = 15
 			slept = 0
 			while slept < run_for:
-				set_color(bridge, Color(config[u'colors'][u'fail']), [ 2 ])
+				set_color(bridge, Color(config[u'colors'][u'twitter_blue']), config[u'groups'][u'twitter_lights'][u'ids'])
 				sleep(sleep_for)
-				set_color(bridge, Color(config[u'colors'][u'volumental_mint']), [ 2 ])
+				set_color(bridge, Color(config[u'colors'][u'volumental_mint']), config[u'groups'][u'twitter_lights'][u'ids'])
 				slept += sleep_for
-			set_color(bridge, Color(volumental_mint_color), [ 2 ])
+	set_color(bridge, Color(config[u'colors'][u'volumental_mint']), config[u'groups'][u'twitter_lights'][u'ids'])
 
 def main():
 	with open('config.json') as config_file:    
