@@ -89,7 +89,7 @@ def update_lamps(config, now):
 			if id in watched:
 				statuses = []	
 				for build_type in project[u'buildTypes'][u'buildType']:
-					b = tc.get_all_builds().set_build_type(build_type[u'id']).set_lookup_limit(1).get_from_server()
+					b = tc.get_all_builds().set_build_type(build_type[u'id']).set_lookup_limit(2).get_from_server()
 					if u'build' in b:
 						status = b[u'build'][0][u'status']
 						statuses.append(status)
