@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from phue import Bridge
 from tc import TeamCityRESTApiClient
 import json
@@ -112,16 +113,16 @@ def update_lamps(config, now):
 	for result in results:
 		ts = datetime.fromtimestamp(mktime(strptime(str(result.created_at),'%Y-%m-%d %H:%M:%S')))
 		ts = ts + timedelta(hours=1)
-		near_past = datetime.now() - timedelta(minutes=5)
+		near_past = datetime.now() - timedelta(minutes=1)
 		if (ts > near_past):
-			print "New tweet found! :", result.text
-			sleep_for = 0.5
-			run_for = 15
+			print "New tweet found! :", result.text.encode('utf-8')
+			sleep_for = 1
+			run_for = 5
 			slept = 0
 			while slept < run_for:
 				set_color(bridge, Color(config[u'colors'][u'twitter_blue']), config[u'groups'][u'twitter_lights'][u'ids'])
 				sleep(sleep_for)
-				set_color(bridge, Color(config[u'colors'][u'volumental_mint']), config[u'groups'][u'twitter_lights'][u'ids'])
+				set_color(bridge, Color(config[u'colors'][u'twitter_orange']), config[u'groups'][u'twitter_lights'][u'ids'])
 				slept += sleep_for
 	set_color(bridge, Color(config[u'colors'][u'volumental_mint']), config[u'groups'][u'twitter_lights'][u'ids'])
 

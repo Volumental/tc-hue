@@ -12,7 +12,7 @@ import pprint
 class TeamCityRESTApiClient:
 
     def __init__(self, username, password, server, port):
-        self.TC_REST_URL = "http://%s:%d/httpAuth/app/rest/" % (server, port)
+        self.TC_REST_URL = "https://%s:%d/httpAuth/app/rest/" % (server, port)
         self.userpass = '%s:%s' % (username, password)
 	self.field_name = ''
         self.locators = {}

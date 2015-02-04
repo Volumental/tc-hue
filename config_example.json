@@ -6,11 +6,12 @@
 		"success": "#00ee33",
 		"fail": "#ff0000",
         "volumental_mint" : "#76c69e",
-        "twitter_blue" : "#0000ff"
+        "twitter_blue" : "#0000ff",
+        "twitter_orange" : "#FBCD36"
 	},
 	"teamcity": {
-		"host": "localhost",
-		"port": "8111",
+    "host": "build.volumental.com",
+    "port": "443",
 		"user": "",
 		"password": "",
 		"watch": [	
