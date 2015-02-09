@@ -15,3 +15,9 @@ On the current build server the update script is run as a cron task under builde
 Dependencies
 
 * phue
+* tweepy
+* mock (only if you want to run tests)
+
+Example command for scheduling a task in Windows:
+
+schtasks /create /sc minute /mo 1 /tn "Update Build Lamps" /tr C:\Users\volumental\tc-hue\update_lamp.bat 
