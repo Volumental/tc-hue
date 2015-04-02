@@ -5,9 +5,9 @@ class WarningAndAlarm(object):
         pygame.init()
         self.image_position = [150, 150]
         self.screen_background = 0, 0, 0
-        self.screen = pygame.display.set_mode([400, 400])
 
     def trigger(self, number_of_times=5):
+        self.screen = pygame.display.set_mode([400, 400])
         for i in range (0,number_of_times):
             pygame.mixer.music.load("warning_sound.wav")
             pygame.mixer.music.play(0)
