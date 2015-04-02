@@ -16,6 +16,7 @@ Dependencies
 
 * phue
 * tweepy
+* pygame (available here: http://www.pygame.org/download.shtml )
 * mock (only if you want to run tests)
 
 Example command for scheduling a task in Windows:
