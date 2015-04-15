@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from phue import Bridge
 from tc import TeamCityRESTApiClient
 import json
 
 from datetime import datetime, timedelta
 from email.utils import parsedate_tz
 from time import mktime, sleep, strptime
-from warning_and_alarm import WarningAndAlarm
 import sys
 from urllib2 import URLError
 
@@ -71,19 +69,14 @@ def create_team_city_client(config):
 		tc[u'host'], int(tc[u'port']))
 
 
-def create_bridge(host):
-	print "Trying hub with address:", host
-	return Bridge(host)
-
-
 def update_build_lamps(config, bridge):
 	tc = create_team_city_client(config)	
 	all_projects = tc.get_all_projects().get_from_server()	
-	watched = config[u'teamcity'][u'watch'];
+	watched = config[u'teamcity'][u'watch']
 
 	ok_projects = []
 	for p in all_projects[u'project']:
-		id = p[u'id'];
+		id = p[u'id']
 		project = tc.get_project_by_project_id(id).get_from_server()
 		if id in watched:
 			statuses = []
@@ -101,10 +94,9 @@ def update_build_lamps(config, bridge):
 	set_color(bridge, Color(config[u'colors'][color_key]), config[u'groups'][u'build_lights'][u'ids'])
 
 
-def update_lamps(config, now):
-	alarm = WarningAndAlarm()
+def update_lamps(config, now, alarm, bridge_creator):
 	try:
-		bridge = create_bridge(config[u'bridge'][u'host'])
+		bridge = bridge_creator(config[u'bridge'][u'host'])
 	
 		bridge.connect()
 		bridge.get_api()
@@ -120,10 +112,21 @@ def update_lamps(config, now):
 		alarm.trigger()
 
 
+def _create_alarm():
+	from warning_and_alarm import WarningAndAlarm
+	return WarningAndAlarm()
+
+
+def _create_bridge(host):
+	from phue import Bridge
+	print "Trying hub with address:", host
+	return Bridge(host)
+
+
 def main():
 	with open('config.json') as config_file:    
 		config = json.load(config_file)
-	update_lamps(config, datetime.now())
+	update_lamps(config, datetime.now(), _create_alarm(), _create_bridge)
 
 
 if __name__ == "__main__":
