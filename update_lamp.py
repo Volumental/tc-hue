@@ -10,6 +10,7 @@ from warning_and_alarm import WarningAndAlarm
 import sys
 from urllib2 import URLError
 
+
 class Color:	
 	def __init__(self, color_string):
 		assert len(color_string) == 7
@@ -40,13 +41,15 @@ class Color:
 		
 		self.hue = hue * 60.0
 
+
 alarm = WarningAndAlarm()
+
 
 def set_color(bridge, color, light_ids=None):
 	lights = bridge.get_light_objects()
 	for light in lights:
 		if light_ids and light.light_id not in light_ids:
-                	continue
+			continue
 		light.brightness = int(color.luminance * 254.0)
 		light.hue = int(color.hue * 65535.0 / 360.0)
 		light.saturation = int(color.saturation * 254.0)
@@ -56,16 +59,19 @@ def on(bridge):
 	for light in lights:
 		light.on = True
 
+
 def off(bridge):
 	lights = bridge.get_light_objects()
 	for light in lights:
 		light.on = False
+
 
 def create_team_city_client(config):
 	tc = config[u'teamcity']
 	return TeamCityRESTApiClient(
 		tc[u'user'], tc[u'password'],
 		tc[u'host'], int(tc[u'port']))
+
 
 def create_bridge(host):
 	print "Trying hub with address:", host
@@ -74,38 +80,38 @@ def create_bridge(host):
 	       
 
 def update_build_lamps(config, bridge):
-			tc = create_team_city_client(config)
+	tc = create_team_city_client(config)
+	try:
+		all_projects = tc.get_all_projects().get_from_server()
+	except URLError:
+		alarm.trigger()
+	else:
+		watched = config[u'teamcity'][u'watch'];
+
+		ok_projects = []
+		for p in all_projects[u'project']:
+			id = p[u'id'];
 			try:
-				all_projects = tc.get_all_projects().get_from_server()
+				project = tc.get_project_by_project_id(id).get_from_server()
 			except URLError:
-				alarm.trigger()
-			else:
-				watched = config[u'teamcity'][u'watch'];
+				alarm.trigger(2)
+			else:			
+				if id in watched:
+					statuses = []	
+					for build_type in project[u'buildTypes'][u'buildType']:
+						b = tc.get_all_builds().set_build_type(build_type[u'id']).set_lookup_limit(2).get_from_server()
+						if u'build' in b:
+							status = b[u'build'][0][u'status']
+							print b[u'build'][0][u'buildTypeId'], status
+							statuses.append(status)
+			
+					ok_projects.append(not 'FAILURE' in statuses)
 
-				ok_projects = []
-				for p in all_projects[u'project']:
-					id = p[u'id'];
-					try:
-						project = tc.get_project_by_project_id(id).get_from_server()
-					except URLError:
-						alarm.trigger(2)
-					else:			
-						if id in watched:
-							statuses = []	
-							for build_type in project[u'buildTypes'][u'buildType']:
-								b = tc.get_all_builds().set_build_type(build_type[u'id']).set_lookup_limit(2).get_from_server()
-								if u'build' in b:
-									status = b[u'build'][0][u'status']
-									print b[u'build'][0][u'buildTypeId'], status
-									statuses.append(status)
-					
-							ok_projects.append(not 'FAILURE' in statuses)
-
-				on(bridge)
-				if all(ok_projects):
-					set_color(bridge, Color(config[u'colors'][u'success']), config[u'groups'][u'build_lights'][u'ids'])
-				else:
-					set_color(bridge, Color(config[u'colors'][u'fail']), config[u'groups'][u'build_lights'][u'ids'])
+		on(bridge)
+		if all(ok_projects):
+			set_color(bridge, Color(config[u'colors'][u'success']), config[u'groups'][u'build_lights'][u'ids'])
+		else:
+			set_color(bridge, Color(config[u'colors'][u'fail']), config[u'groups'][u'build_lights'][u'ids'])
 
 
 def update_lamps(config, now):
@@ -128,11 +134,11 @@ def update_lamps(config, now):
 		else:
 			off(bridge)
 
+
 def main():
 	with open('config.json') as config_file:    
 		config = json.load(config_file)
 	update_lamps(config, datetime.now())
-
 
 
 if __name__ == "__main__":
