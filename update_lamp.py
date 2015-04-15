@@ -70,6 +70,14 @@ def create_team_city_client(config):
 		tc[u'host'], int(tc[u'port']))
 
 
+def _tc_builds_are_green(id):
+	import urllib2
+	url = "https://build.volumental.com/httpAuth/app/rest/builds/?locator=status:failure,sinceBuild:(status:success)"
+	with urllib2.urlopen(url) as response:
+		contents = response.read()
+		return 'count="0"' in contents
+
+
 def update_build_lamps(config, bridge):
 	tc = create_team_city_client(config)	
 	all_projects = tc.get_all_projects().get_from_server()	
