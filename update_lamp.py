@@ -75,7 +75,6 @@ def create_bridge(host):
 	print "Trying hub with address:", host
 	return Bridge(host)
 
-	       
 
 def update_build_lamps(config, bridge):
 	tc = create_team_city_client(config)	
@@ -98,10 +97,8 @@ def update_build_lamps(config, bridge):
 				ok_projects.append(not 'FAILURE' in statuses)
 
 	on(bridge)
-	if all(ok_projects):
-		set_color(bridge, Color(config[u'colors'][u'success']), config[u'groups'][u'build_lights'][u'ids'])
-	else:
-		set_color(bridge, Color(config[u'colors'][u'fail']), config[u'groups'][u'build_lights'][u'ids'])
+	color_key = u'success' if all(ok_projects) else u'fail'
+	set_color(bridge, Color(config[u'colors'][color_key]), config[u'groups'][u'build_lights'][u'ids'])
 
 
 def update_lamps(config, now):
