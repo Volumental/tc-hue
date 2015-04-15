@@ -3,8 +3,6 @@ from phue import Bridge
 from tc import TeamCityRESTApiClient
 import json
 
-from tweepy import OAuthHandler
-from tweepy import API 
 from datetime import datetime, timedelta
 from email.utils import parsedate_tz
 from time import mktime, sleep, strptime
@@ -109,28 +107,6 @@ def update_build_lamps(config, bridge):
 				else:
 					set_color(bridge, Color(config[u'colors'][u'fail']), config[u'groups'][u'build_lights'][u'ids'])
 
-def update_twitter_lamps(config, bridge):
-		# Check if have a tweet in the last 5 minutes on twitter. If yes, let the twitter light go bananas.
-		auth = OAuthHandler(config[u'twitter_settings'][u'consumer_key'], config[u'twitter_settings'][u'consumer_secret'])
-		auth.set_access_token(config[u'twitter_settings'][u'access_token'],config[u'twitter_settings'][u'access_token_secret'])
-		api = API(auth)
-		results = api.search(q="volumental-from%3Avolumental")
-		for result in results:
-			ts = datetime.fromtimestamp(mktime(strptime(str(result.created_at),'%Y-%m-%d %H:%M:%S')))
-			ts = ts + timedelta(hours=1)
-			near_past = datetime.now() - timedelta(minutes=1)
-			if (ts > near_past):
-				print "New tweet found! :", result.text.encode('utf-8')
-				sleep_for = 1
-				run_for = 5
-				slept = 0
-				while slept < run_for:
-					set_color(bridge, Color(config[u'colors'][u'twitter_blue']), config[u'groups'][u'twitter_lights'][u'ids'])
-					sleep(sleep_for)
-					set_color(bridge, Color(config[u'colors'][u'twitter_orange']), config[u'groups'][u'twitter_lights'][u'ids'])
-					slept += sleep_for
-		set_color(bridge, Color(config[u'colors'][u'volumental_mint']), config[u'groups'][u'twitter_lights'][u'ids'])
-
 
 def update_lamps(config, now):
 	try:
@@ -149,10 +125,6 @@ def update_lamps(config, now):
 				update_build_lamps(config, bridge)
 			except:
 				alarm.trigger()
-			try:					
-				update_twitter_lamps(config, bridge)
-			except: 
-				alarm.trigger(2)
 		else:
 			off(bridge)
 
