@@ -7,6 +7,7 @@ from email.utils import parsedate_tz
 from time import mktime, sleep, strptime
 import sys
 from urllib2 import URLError
+import traceback
 
 
 class Color:	
@@ -109,6 +110,7 @@ def update_lamps(config, now, alarm, bridge_creator):
 		else:
 			off(bridge)
 	except:
+		traceback.print_exc()
 		alarm.trigger()
 
 
