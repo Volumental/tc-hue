@@ -5,7 +5,7 @@ import json
 from datetime import datetime, timedelta
 from time import mktime, sleep, strptime
 import sys
-from urllib2 import URLError
+import urllib2
 import traceback
 
 class NoAlarm:
@@ -111,7 +111,7 @@ def update_build_lamps(config, bridge):
 
 def update_lamps(config, now, alarm, bridge_creator):
 	try:
-		bridge = bridge_creator(config[u'bridge'][u'host'])
+		bridge = bridge_creator(config[u'bridge'])
 	
 		bridge.connect()
 		bridge.get_api()
@@ -134,9 +134,18 @@ def _create_alarm():
 	return NoAlarm()
 
 
-def _create_bridge(host):
+def _create_bridge(bridge_config):
 	from phue import Bridge
-	print "Trying hub with address:", host
+	if u'host' in bridge_config:
+		host = bridge_config[u'host']
+	else:
+		response = urllib2.urlopen("https://www.meethue.com/api/nupnp")
+		upnp = json.load(response)
+		
+		bridge_object = next(x for x in upnp if x[u'id'] == bridge_config[u'id'])
+		host = bridge_object[u'internalipaddress']
+
+		print "Trying hub with address:", host
 	return Bridge(host)
 
 
