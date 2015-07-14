@@ -1,35 +1,35 @@
 {
-	"bridge": {
-		"host": ""
-	},
-	"colors": {
-		"success": "#00ee33",
-		"fail": "#ff0000",
-        "volumental_mint" : "#76c69e",
-        "twitter_blue" : "#0000ff",
-        "twitter_orange" : "#FBCD36"
-	},
-	"teamcity": {
+  "bridge": {
+    "id": "",
+    "host": ""
+  },
+  "colors": {
+    "success": "#00ee33",
+    "fail": "#ff0000",
+      "volumental_mint" : "#76c69e",
+      "twitter_blue" : "#0000ff",
+      "twitter_orange" : "#FBCD36"
+  },
+  "teamcity": {
     "host": "build.volumental.com",
     "port": "443",
-		"user": "",
-		"password": "",
-		"watch": [	
-		]
-	},
-    "groups":  {
-            "build_lights": {
-                          "ids": [ 1, 3 ]
-             },
-            "twitter_lights": {
-                            "ids": [ 2 ]
-            }
+    "user": "",
+    "password": "",
+    "watch": [
+    ]
+  },
+  "groups":  {
+    "build_lights": {
+      "ids": [ 1, 3 ]
     },
-    "twitter_settings": {
-           "consumer_key": "",
-           "consumer_secret": "",
-           "access_token": "",
-           "access_token_secret": ""
-   }
+    "twitter_lights": {
+      "ids": [ 2 ]
+    }
+  },
+  "twitter_settings": {
+    "consumer_key": "",
+    "consumer_secret": "",
+    "access_token": "",
+    "access_token_secret": ""
+  }
 }
-
