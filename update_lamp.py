@@ -3,11 +3,17 @@ from tc import TeamCityRESTApiClient
 import json
 
 from datetime import datetime, timedelta
-from email.utils import parsedate_tz
 from time import mktime, sleep, strptime
 import sys
 from urllib2 import URLError
 import traceback
+
+class NoAlarm:
+	def __init__(self):
+		pass
+
+	def trigger(self):
+		pass
 
 
 class Color:	
@@ -123,8 +129,9 @@ def update_lamps(config, now, alarm, bridge_creator):
 
 
 def _create_alarm():
-	from warning_and_alarm import WarningAndAlarm
-	return WarningAndAlarm()
+	#from warning_and_alarm import WarningAndAlarm
+	#return WarningAndAlarm()
+	return NoAlarm()
 
 
 def _create_bridge(host):
