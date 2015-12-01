@@ -8,13 +8,6 @@ import sys
 import urllib2
 import traceback
 
-class NoAlarm:
-	def __init__(self):
-		pass
-
-	def trigger(self):
-		pass
-
 
 class Color:	
 	def __init__(self, color_string):
@@ -109,29 +102,19 @@ def update_build_lamps(config, bridge):
 	set_color(bridge, Color(config[u'colors'][color_key]), config[u'groups'][u'build_lights'][u'ids'])
 
 
-def update_lamps(config, now, alarm, bridge_creator):
-	try:
-		bridge = bridge_creator(config[u'bridge'])
-	
-		bridge.connect()
-		bridge.get_api()
+def update_lamps(config, now, bridge_creator):	
+    bridge = bridge_creator(config[u'bridge'])
 
-		today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
-		today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
+    bridge.connect()
+    bridge.get_api()
 
-		if now > today06 and now < today20:			
-			update_build_lamps(config, bridge)
-		else:
-			off(bridge)
-	except:
-		traceback.print_exc()
-		alarm.trigger()
+    today20 = now.replace(hour=20, minute=0, second=0, microsecond=0)
+    today06 = now.replace(hour=6, minute=0, second=0, microsecond=0)
 
-
-def _create_alarm():
-	#from warning_and_alarm import WarningAndAlarm
-	#return WarningAndAlarm()
-	return NoAlarm()
+    if now > today06 and now < today20:			
+        update_build_lamps(config, bridge)
+    else:
+        off(bridge)
 
 
 def _create_bridge(bridge_config):
@@ -155,7 +138,7 @@ def _create_bridge(bridge_config):
 def main():
 	with open('config.json') as config_file:    
 		config = json.load(config_file)
-	update_lamps(config, datetime.now(), _create_alarm(), _create_bridge)
+	update_lamps(config, datetime.now(), _create_bridge)
 
 
 if __name__ == "__main__":

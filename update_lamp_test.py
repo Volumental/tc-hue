@@ -2,6 +2,7 @@ import update_lamp
 from mock import Mock
 import datetime
 
+
 class fake_team_city:
 	def __init__(self, projects):
 		self.projects = projects
@@ -27,8 +28,8 @@ class fake_team_city:
 		for id in self.projects:
 			for cfg_id in self.projects[id]:
 				if cfg_id == build_type:
-					s = self.status(self.projects[id][cfg_id]) 
-					self.value =  { u'build': [ { u'status': s } ] }
+					s = self.status(self.projects[id][cfg_id])
+					self.value =  { u'build': [ { u'status': s, u'buildTypeId': build_type } ] }
 		return self
 	
 	def get_all_builds(self):
@@ -37,36 +38,40 @@ class fake_team_city:
 	def set_lookup_limit(self, limit):
 		return self
 
+
 light1 = Mock()
 def create_bridge_fake(host):
 	bridge = Mock()
 	bridge.connect = Mock()
-
+    
 	bridge.get_light_objects.return_value = [light1]
 	return bridge
+
 
 def assertEqual(expected, actual):
 	assert expected == actual, "Expected %s, but was %s" % (expected, actual)
 
+
 class fixture:
 	def __init__(self, cfg):
 		self.cfg = cfg
-		update_lamp.create_bridge = create_bridge_fake
+		self.create_bridge = create_bridge_fake
 		self.now = datetime.datetime(2014, 9, 25, 13, 37)
 
 	def test_one_build_failed(self):
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': False } })
-		update_lamp.update_lamps(self.cfg, self.now)
+		update_lamp.update_lamps(self.cfg, self.now, self.create_bridge)
 		
 		assertEqual(0, light1.hue)
 		assertEqual(True, light1.on)
 
 	def test_no_builds_fail(self):
 		update_lamp.create_team_city_client = lambda config: fake_team_city({ 'a': { 'config_a': True } })
-		update_lamp.update_lamps(self.cfg, self.now)
+		update_lamp.update_lamps(self.cfg, self.now, self.create_bridge)
 
 		assertEqual(21845, light1.hue)	
 		assertEqual(True, light1.on)
+
 
 def main():
 	cfg = {
@@ -83,7 +88,10 @@ def main():
 			"host": "teamcity.acme.com",
 			"port": "666",
 			"watch": ["a", "b"]
-		}
+		},
+        "groups": {
+            "build_lights": { "ids": None }
+        }
 	}
 	f = fixture(cfg)
 	f.test_one_build_failed()
