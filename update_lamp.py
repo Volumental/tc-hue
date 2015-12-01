@@ -119,9 +119,7 @@ def update_lamps(config, now, bridge_creator):
 
 def _create_bridge(bridge_config):
 	from phue import Bridge
-	if u'host' in bridge_config:
-		host = bridge_config[u'host']
-	else:
+	if u'id' in bridge_config:
 		response = urllib2.urlopen("https://www.meethue.com/api/nupnp")
 		upnp = json.load(response)
 		
@@ -130,13 +128,16 @@ def _create_bridge(bridge_config):
 		print(bridges)
 		bridge_object = next(bridges)
 		host = bridge_object[u'internalipaddress']
-
 		print "Trying hub with address:", host
+	else:
+		host = bridge_config[u'host']
+		
 	return Bridge(host)
 
 
 def main():
-	with open('config.json') as config_file:    
+	config_path = '{}/{}'.format(sys.path[0], 'config.json')
+	with open(config_path) as config_file:    
 		config = json.load(config_file)
 	update_lamps(config, datetime.now(), _create_bridge)
 
