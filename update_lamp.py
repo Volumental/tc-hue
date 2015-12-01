@@ -91,9 +91,9 @@ def update_build_lamps(config, bridge):
 
 	ok_projects = []
 	for p in all_projects[u'project']:
-		id = p[u'id']
-		project = tc.get_project_by_project_id(id).get_from_server()
-		if id in watched:
+		project_id = p[u'id']
+		if project_id in watched:
+			project = tc.get_project_by_project_id(project_id).get_from_server()
 			statuses = []
 			for build_type in project[u'buildTypes'][u'buildType']:
 				b = tc.get_all_builds().set_build_type(build_type[u'id']).set_lookup_limit(2).get_from_server()
@@ -142,7 +142,10 @@ def _create_bridge(bridge_config):
 		response = urllib2.urlopen("https://www.meethue.com/api/nupnp")
 		upnp = json.load(response)
 		
-		bridge_object = next(x for x in upnp if x[u'id'] == bridge_config[u'id'])
+		bid = bridge_config[u'id']
+		bridges = (x for x in upnp if x[u'id'] == bid) if bid else iter(upnp)
+		print(bridges)
+		bridge_object = next(bridges)
 		host = bridge_object[u'internalipaddress']
 
 		print "Trying hub with address:", host
