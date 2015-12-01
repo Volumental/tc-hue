@@ -1,7 +1,7 @@
 {
   "bridge": {
-    "id": "",
-    "host": ""
+    "id": null,
+    "host": "<hostname>"
   },
   "colors": {
     "success": "#00ee33",
@@ -19,9 +19,7 @@
     ]
   },
   "groups":  {
-    "build_lights": {
-      "ids": [ 1, 3 ]
-    },
+    "build_lights": { "ids": null },
     "twitter_lights": {
       "ids": [ 2 ]
     }
