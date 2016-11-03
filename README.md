@@ -26,5 +26,5 @@ schtasks /create /sc minute /mo 1 /tn "Update Build Lamps" /tr C:\Users\volument
 
 Example crontab line for updating the lamps every 5 minutes
 ```crontab
-*/5     *       *       *       *       /home/pi/tc-hue/update_lamp.sh`
+*/5     *       *       *       *       /home/pi/tc-hue/update_lamp.sh
 ```
