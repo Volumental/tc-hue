@@ -1,5 +1,6 @@
- tc-hue
+ tc-hue [![Build Status](https://travis-ci.com/Volumental/tc-hue.svg?branch=master)](https://travis-ci.com/Volumental/tc-hue)
 ========
+
 Updates a Philips Hue depending on TeamCity build status.
 
 The machine running this code needs to be on the same network as the Phillips Hue Bridge.
