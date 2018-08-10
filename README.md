@@ -47,3 +47,13 @@ To make the update script run e.g. every 5th minute, run `crontab -e` and put in
 Some old documentation for setting up scheduled execution on windows.
 
     schtasks /create /sc minute /mo 1 /tn "Update Build Lamps" /tr C:\Users\volumental\tc-hue\update_lamp.bat 
+
+# The server
+There is a small flask server to make it easier to trigger the updating
+
+1. Copy `build-lamp.service` to `/etc/sytemd/system`.
+2. `chown root:root /etc/sytemd/system/build-lamp.service`
+3. `sudo systemctl enable build-lamp.service`
+4. `sudo service build-lamp start`
+
+Go to `http://build-lamp.local.:5000/`
