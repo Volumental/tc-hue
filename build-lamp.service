@@ -1,0 +1,15 @@
+[Unit]
+Description=Volumental Build Lamp
+Wants=network-online.target
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/tc-hue
+ExecStart=/home/pi/tc-hue/run.sh
+
+# Automatically restart on any failure.
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
