@@ -10,13 +10,6 @@ from urllib import request
 import traceback
 import phue
 
-class NoAlarm:
-    def __init__(self):
-        pass
-
-    def trigger(self):
-        pass
-
 
 class Color:
     def __init__(self, color_string):
@@ -110,7 +103,7 @@ def update_build_lamps(config, bridge):
     set_color(bridge, Color(config['colors'][color_key]), config['groups']['build_lights']['ids'])
 
 
-def update_lamps(config, now, alarm, bridge_creator):
+def update_lamps(config, now, bridge_creator):
     try:
         bridge = bridge_creator(config['bridge'])
 
@@ -126,13 +119,6 @@ def update_lamps(config, now, alarm, bridge_creator):
             off(bridge)
     except:
         traceback.print_exc()
-        alarm.trigger()
-
-
-def _create_alarm():
-    # from warning_and_alarm import WarningAndAlarm
-    # return WarningAndAlarm()
-    return NoAlarm()
 
 
 def _create_bridge(bridge_config):
@@ -153,10 +139,10 @@ def _create_bridge(bridge_config):
 def main():
     with open('config_reconstruction.json') as config_file:
         config = json.load(config_file)
-    update_lamps(config, datetime.now(), _create_alarm(), _create_bridge)
+    update_lamps(config, datetime.now(), _create_bridge)
     with open('config_cloud.json') as config_file:
         config = json.load(config_file)
-    update_lamps(config, datetime.now(), _create_alarm(), _create_bridge)
+    update_lamps(config, datetime.now(), _create_bridge)
 
 
 if __name__ == "__main__":
