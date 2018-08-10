@@ -1,7 +1,6 @@
 {
   "bridge": {
-    "id": "",
-    "host": ""
+    "id": "001788fffe16c29d"
   },
   "colors": {
     "success": "#00ee33",
@@ -13,17 +12,19 @@
   "teamcity": {
     "host": "build.volumental.com",
     "port": "443",
-    "user": "",
-    "password": "",
+    "user": "build-lamp",
+    "password": "8y77t4gikhcq",
     "watch": [
+	"Vaka",
+	"Virga"
     ]
   },
   "groups":  {
     "build_lights": {
-      "ids": [ 1, 3 ]
+      "ids": [ 3 ]
     },
     "twitter_lights": {
-      "ids": [ 2 ]
+      "ids": [ ]
     }
   },
   "twitter_settings": {

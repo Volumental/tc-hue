@@ -16,15 +16,9 @@ Dependencies
 
 * phue
 * tweepy
+* pygame (available here: http://www.pygame.org/download.shtml )
 * mock (only if you want to run tests)
 
 Example command for scheduling a task in Windows:
 
-```
 schtasks /create /sc minute /mo 1 /tn "Update Build Lamps" /tr C:\Users\volumental\tc-hue\update_lamp.bat 
-```
-
-Example crontab line for updating the lamps every 5 minutes
-```crontab
-*/5     *       *       *       *       /home/pi/tc-hue/update_lamp.sh
-```

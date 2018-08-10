@@ -1,3 +1,3 @@
 #!/bin/sh
 cd ${0%/*}
-python update_lamp.py
+python3 update_lamp.py

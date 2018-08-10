@@ -4,7 +4,7 @@ RESTful api definition: http://${TeamCity}/guestAuth/app/rest/application.wadl
 """
 
 import json
-import urllib2
+from urllib import request
 import base64
 from datetime import datetime,timedelta
 import pprint
@@ -13,13 +13,15 @@ class TeamCityRESTApiClient:
 
     def __init__(self, username, password, server, port):
         self.TC_REST_URL = "https://%s:%d/httpAuth/app/rest/" % (server, port)
+        self.username = username
+        self.password = password
         self.userpass = '%s:%s' % (username, password)
-	self.field_name = ''
+        self.field_name = ''
         self.locators = {}
 
     def field(self, field_name):
         self.field_name = '/' + field_name
-	return self;
+        return self;
 
     # count:<number> - serve only the specified number of builds
     def set_count(self, count):
@@ -91,7 +93,7 @@ class TeamCityRESTApiClient:
         minutes_delta = timedelta(minutes = minutes)
         minutes_ago = datetime.now() - minutes_delta
 
-	    # Hardcoding NY time zone here... Assumes machines is on the same timezone
+      # Hardcoding NY time zone here... Assumes machines is on the same timezone
         self.locators['sinceDate'] = minutes_ago.strftime('%Y%m%dT%H%M%S') + '-0500'
         return self
 
@@ -117,20 +119,22 @@ class TeamCityRESTApiClient:
         full_resource_url = self.resource
         if len(self.locators) > 0:
             # print self.locators
-            locators ='?locator=' + ','.join(["%s:%s" % (k, v) for k, v in self.locators.iteritems()])
+            locators ='?locator=' + ','.join(["%s:%s" % (k, v) for k, v in self.locators.items()])
             full_resource_url = full_resource_url + locators + self.field_name
         return full_resource_url
 
     def get_from_server(self):
         full_resource_url = self.compose_resource_path()
         #print full_resource_url
-        req = urllib2.Request(full_resource_url)
-        base64string = base64.encodestring(self.userpass).replace('\n', '')
-        req.add_header("Authorization", "Basic %s" % base64string)
+        req = request.Request(full_resource_url)
+        base64string = base64.encodestring(('%s:%s' % (self.username,self.password)).encode()).decode().replace('\n', '')
+
+        req.add_header("Authorization", "Basic %s" % base64string)  
         req.add_header('Accept', 'application/json')
-        response = urllib2.urlopen(req)
+        response = request.urlopen(req)
         res = response.read()
-        data = json.loads(res)
+        print(res)
+        data = json.loads(res.decode())
         response.close()
         return data
 
