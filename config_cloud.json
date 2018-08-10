@@ -4,10 +4,7 @@
   },
   "colors": {
     "success": "#00ee33",
-    "fail": "#ff0000",
-      "volumental_mint" : "#76c69e",
-      "twitter_blue" : "#0000ff",
-      "twitter_orange" : "#FBCD36"
+    "fail": "#ff0000"
   },
   "teamcity": {
     "host": "build.volumental.com",
@@ -18,19 +15,5 @@
 	"Vaka",
 	"Virga"
     ]
-  },
-  "groups":  {
-    "build_lights": {
-      "ids": [ 3 ]
-    },
-    "twitter_lights": {
-      "ids": [ ]
-    }
-  },
-  "twitter_settings": {
-    "consumer_key": "",
-    "consumer_secret": "",
-    "access_token": "",
-    "access_token_secret": ""
   }
 }

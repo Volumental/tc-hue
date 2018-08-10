@@ -42,11 +42,9 @@ class Color:
         self.hue = hue * 60.0
 
 
-def set_color(bridge, color, light_ids=None):
+def set_color(bridge, color):
     lights = bridge.get_light_objects()
     for light in lights:
-        if light_ids and light.light_id not in light_ids:
-            continue
         light.brightness = int(color.luminance * 254.0)
         light.hue = int(color.hue * 65535.0 / 360.0)
         light.saturation = int(color.saturation * 254.0)
@@ -100,7 +98,7 @@ def update_build_lamps(config, bridge):
 
     on(bridge)
     color_key = 'success' if all(ok_projects) else 'fail'
-    set_color(bridge, Color(config['colors'][color_key]), config['groups']['build_lights']['ids'])
+    set_color(bridge, Color(config['colors'][color_key]))
 
 
 def update_lamps(config, now, bridge_creator):
