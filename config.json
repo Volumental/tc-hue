@@ -12,8 +12,9 @@
     "user": "build-lamp",
     "password": "8y77t4gikhcq",
     "watch": [
-	"Vaka",
-	"Virga"
+      "Reconstruction",
+      "Vaka",
+      "Virga"
     ]
   }
 }

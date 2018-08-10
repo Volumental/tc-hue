@@ -135,10 +135,7 @@ def _create_bridge(bridge_config):
 
 
 def main():
-    with open('config_reconstruction.json') as config_file:
-        config = json.load(config_file)
-    update_lamps(config, datetime.now(), _create_bridge)
-    with open('config_cloud.json') as config_file:
+    with open('config.json') as config_file:
         config = json.load(config_file)
     update_lamps(config, datetime.now(), _create_bridge)
 
