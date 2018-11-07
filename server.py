@@ -25,4 +25,6 @@ def index():
         'stdout': _slurp('stdout') or '',
         'stderr': _slurp('stderr') or '',
     }
-    return render_template('index.html', latest=latest)
+    return render_template('index.html',
+        latest=latest,
+        config=_slurp('config.json') or 'No config file!')
