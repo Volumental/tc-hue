@@ -1,0 +1,75 @@
+/* Licensed under the MIT/X11 License (http://opensource.org/licenses/MIT) */
+/* Made by Samuel Carlsson <samuel.carlsson@gmail.com> */
+
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+
+body, input, button, textarea {
+    background: #353535;
+    color: #b2b2b2;
+    font-size: 24px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+input, button, textarea {
+    padding: 6px 12px;
+    outline: none;
+    border: 1px solid #282828;
+    border-radius: 8px;
+    background: linear-gradient(#303030, #3c3c3c);
+    box-shadow: inset 1px 3px 6px 0px #282828, 1px 1px 3px #282828;
+}
+
+input[type=text], textarea {
+}
+
+input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+input[type=checkbox] {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    padding: 0 0 0 0px;
+}
+
+input[type=checkbox]:checked {
+    background: linear-gradient(#f5995d, #ea8443);
+    box-shadow: 1px 2px 3px #282828,
+        inset 1px 1px rgba(255, 255, 255, 0.4),
+        inset -1px -1px rgba(0, 0, 0, 0.4);
+}
+
+input[type=submit], button {
+    color: #353535;
+    background: linear-gradient(#f5995d, #ea8443);
+    box-shadow: 1px 2px 3px #282828,
+        inset 1px 1px rgba(255, 255, 255, 0.4),
+        inset -1px -1px rgba(0, 0, 0, 0.4);
+}
+
+input[type=submit]:active, button:active, input[type=checkbox]:active {
+    position: relative;
+    top: 1px;
+    left: 1px;
+    box-shadow: inset 1px 2px 3px 0px #282828;
+}
+
+a {
+    color: #ea8443;
+}
+a:hover {
+    color: #f5995d;
+}
+
+::selection {
+    color: #353535;
+    background: #ea8443;
+}
+
+/*input:focus, button:focus {
+    outline-color: orange;
+    border: 1px solid orange;
+}*/
