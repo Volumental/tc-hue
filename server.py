@@ -35,15 +35,20 @@ def post_config():
 
 
 def _modified(path: str) -> datetime.datetime:
-    timestamp = os.path.getmtime(path)
-    return datetime.datetime.fromtimestamp(timestamp)
+    try:
+        timestamp = os.path.getmtime(path)
+        return datetime.datetime.fromtimestamp(timestamp)
+    except FileNotFoundError:
+        return None
+
 
 @app.route('/')
 def index():
+    modified = _modified('stdout')
     latest = {
         'stdout': _slurp('stdout') or '',
         'stderr': _slurp('stderr') or '',
-        'timestamp': _modified('stdout').isoformat()
+        'timestamp': modified.isoformat() if modified else 'N/A'
     }
     return render_template('index.html',
         latest=latest,

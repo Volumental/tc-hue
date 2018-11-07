@@ -133,7 +133,6 @@ class TeamCityRESTApiClient:
         req.add_header('Accept', 'application/json')
         response = request.urlopen(req)
         res = response.read()
-        print(res)
         data = json.loads(res.decode())
         response.close()
         return data
