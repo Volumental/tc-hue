@@ -7,13 +7,17 @@
   </head>
   <body>
     <h1>Build Lamp</h1>
-    <h3>Configuration</h3>
-    <textarea rows='25' cols='60' id='config'>{{ config }}</textarea>
-
     <h3>Latest run</h3>
     <pre id='stdout'>{{ latest.stdout }}</pre>
-    <pre id='stderr'>{{ latest.stderr }}</pre>
+    <pre id='stderr' class="error">{{ latest.stderr }}</pre>
     <button id="trigger">Trigger</button>
+    <label for="trigger" class="error"></label>
     <progress id='progress' style="display: none"></progress>
+
+    <h3>Configuration</h3>
+    <textarea rows='21' cols='60' id='config'>{{ config }}</textarea>
+    <br/>
+    <button id='save_config'>Save</button>
+    <label for="save_config" class="error"></label>
   </body>
 </html>

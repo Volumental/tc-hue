@@ -15,8 +15,8 @@ def _slurp(path):
 
 @app.route('/api/trigger', methods=("POST",))
 def trigger():
-    output = subprocess.check_output('./update_lamp.sh')
-    return output
+    subprocess.check_call('./update_lamp.sh')
+    return "OK"
 
 
 @app.route('/')
