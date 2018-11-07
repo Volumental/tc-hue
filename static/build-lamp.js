@@ -5,8 +5,25 @@ function post(url) {
     });
 }
 
+function hide(element) {
+  element.style.display = 'none';
+}
+
+function show(element) {
+  element.style.display = 'block';
+}
+
+function hide_progress() {
+  hide(document.getElementById('progress'));
+}
+
+function show_progress() {
+  show(document.getElementById('progress'));
+}
+
 function trigger() {
-  post('/api/trigger').then(console.log);
+  show_progress()
+  post('/api/trigger').then(hide_progress);
 }
 
 function ready() {
