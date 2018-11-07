@@ -1,17 +1,28 @@
-from flask import Flask, jsonify, render_template
-
 import subprocess
 
-app = Flask(__name__)
+from flask import Flask, jsonify, render_template
 
-# debug hax
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+def _slurp(path):
+    try:
+        with open(path) as f:
+            return f.read()
+    except FileNotFoundError:
+        return None
+
 
 @app.route('/api/trigger', methods=("POST",))
 def trigger():
     output = subprocess.check_output('./update_lamp.sh')
     return output
 
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    latest = {
+        'stdout': _slurp('stdout') or '',
+        'stderr': _slurp('stderr') or '',
+    }
+    return render_template('index.html', latest=latest)
