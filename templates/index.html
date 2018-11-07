@@ -8,6 +8,7 @@
   <body>
     <h1>Build Lamp</h1>
     <h3>Latest run</h3>
+    <p>at {{ latest.timestamp }}</p>
     <pre id='stdout'>{{ latest.stdout }}</pre>
     <pre id='stderr' class="error">{{ latest.stderr }}</pre>
     <button id="trigger">Trigger</button>

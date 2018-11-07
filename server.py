@@ -1,5 +1,7 @@
+import datetime
 import json
 import subprocess
+import os
 
 from flask import Flask, jsonify, render_template, request
 
@@ -32,11 +34,16 @@ def post_config():
     return "OK"
 
 
+def _modified(path: str) -> datetime.datetime:
+    timestamp = os.path.getmtime(path)
+    return datetime.datetime.fromtimestamp(timestamp)
+
 @app.route('/')
 def index():
     latest = {
         'stdout': _slurp('stdout') or '',
         'stderr': _slurp('stderr') or '',
+        'timestamp': _modified('stdout').isoformat()
     }
     return render_template('index.html',
         latest=latest,
