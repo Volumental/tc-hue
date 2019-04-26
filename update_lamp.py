@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-from tc import TeamCityRESTApiClient
-import json
-
 from datetime import datetime, timedelta
-from time import mktime, sleep, strptime
+import json
+import subprocess
 import sys
-from urllib import request
+from time import mktime, sleep, strptime
 import traceback
+from urllib import request
+
 import phue
+from tc import TeamCityRESTApiClient
 
 
 class Color:
@@ -76,12 +76,29 @@ def _tc_builds_are_green(id):
         return 'count="0"' in contents
 
 
+def _cloud_build_status(project_id: str) -> bool:
+    builds = json.loads(subprocess.check_output([
+        'gcloud', '--project', project_id,
+        'builds', 'list',
+        '--filter', "source.repo_source.branch_name='master'",
+        '--sort-by=finish_time',
+        '--limit=1',
+        '--format=json(id, status)'
+    ]).decode())
+
+    build = builds[0]
+    return build['status']
+
+
 def update_build_lamps(config, bridge):
     tc = create_team_city_client(config)
     all_projects = tc.get_all_projects().get_from_server()
     watched = config['teamcity']['watch']
 
     ok_projects = []
+
+    # team city
+    print('--- TeamCity ---')
     for p in all_projects['project']:
         id = p['id']
         project = tc.get_project_by_project_id(id).get_from_server()
@@ -95,6 +112,14 @@ def update_build_lamps(config, bridge):
                     statuses.append(status)
 
                 ok_projects.append(not 'FAILURE' in statuses)
+
+    # cloud build
+    print('--- cloud build ---')
+    if 'cloud-build' in config:
+        for project_id in config['cloud-build'].get('watch', []):
+            status = _cloud_build_status(project_id)
+            print(project_id, status)
+            ok_projects.append(status == "SUCCESS")
 
     on(bridge)
     color_key = 'success' if all(ok_projects) else 'fail'
